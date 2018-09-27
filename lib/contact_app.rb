@@ -1,9 +1,18 @@
+require 'json'
 require 'terminal-table'
 require_relative 'contact'
 class ContactApp
-    @contact=[]
   
     def initialize
+      file_exist=File.exist?("contacts.json")
+      if (!file_exist)
+        contacts_json=File.open("contacts.json","w")
+        contacts_json.puts(Contact::contacts.to_json)
+        contacts_json.close
+      else 
+        file=File.read("contacts.json")
+        Contact::contacts=JSON.parse(file)
+      end
       launch_app
     end
   
@@ -13,7 +22,7 @@ class ContactApp
         puts "2.- Display all contacts"
         puts "3.- Modify a contact"
         puts "4.- Delete a contact"
-        puts "5.- Exit the program"
+        puts "5.- Save & exit the program"
         puts "Select an action from the menu. HINT: You should create a contact first."
         @choice=gets.strip.to_i
         break if (1..5).include?(@choice)
@@ -37,8 +46,22 @@ class ContactApp
                 delete_contact
             when 5
                 puts "Saving contacts and exiting the program"
+                saving_and_exiting
         end
         display_menu
+    end
+
+    def contact_rows
+      index = 0
+      rows=[]
+        contactIndex=0
+        Contact::contacts.each do |contact|
+            rowContact=contact.values.flatten
+            rowContact.unshift(contactIndex+1)
+            rows.push(rowContact)
+            contactIndex+=1
+        end
+        @rows=rows
     end
   
     def launch_app
@@ -50,20 +73,15 @@ class ContactApp
      if Contact::contacts.empty?
       puts "The list is empty..."
      else 
-      index = 0
-      rows=[]
-        contactIndex=0
-        Contact::contacts.each do |contact|
-            rowContact=contact.values.flatten
-            rowContact.unshift(contactIndex+1)
-            rows.push(rowContact)
-            contactIndex+=1
-        end
-
-        table = Terminal::Table.new :title => "Ruby CLI Contact App", :headings => ['ID', 'Full Name','Email','Address','Phone Number'], :rows => rows
-
-        puts table
+      
+     contact_rows
+     format_table
      end
+    end
+
+    def format_table
+      table = Terminal::Table.new :title => "Ruby CLI Contact App", :headings => ['ID', 'Full Name','Email','Address','Phone Number'], :rows => @rows
+      puts table
     end
   
     def add_a_contact
@@ -134,6 +152,13 @@ class ContactApp
         puts "Invalid ID"
       end 
   
+    end
+
+    def saving_and_exiting
+      contacts_json=File.open("contacts.json","w")
+      contacts_json.puts(Contact::contacts.to_json)
+      contacts_json.close
+      abort("Thank You for using this app!")
     end
   
   end

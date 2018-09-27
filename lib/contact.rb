@@ -72,6 +72,10 @@ class Contact
     def self.contacts
       @@contacts
     end
+
+    def self.contacts=(passed_contact_list)
+      @@contacts=passed_contact_list
+    end
   
    
   end

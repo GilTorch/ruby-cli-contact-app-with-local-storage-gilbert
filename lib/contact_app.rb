@@ -22,26 +22,23 @@ class ContactApp
     end
   
     def manage_choice
-       case @choice
-      when 1
-        "You will add a contact"
-         add_a_contact
-         display_menu
-      when 2
-        " display all contacts"
-         display_contacts
-         display_menu
-      when 3
-      "You will modify a contact"
-        modify_contact
+        case @choice
+            when 1
+                puts "Adding a contact..."
+                add_a_contact
+            when 2
+                puts "Displaying all contacts.."
+                display_contacts
+            when 3
+                puts "Modifying a contact..."
+                modify_contact
+            when 4
+                puts "Deleting a contact..."
+                delete_contact
+            when 5
+                puts "Saving contacts and exiting the program"
+        end
         display_menu
-      when 4
-        "You will delete a contact"
-         delete_contact
-         display_menu
-      when 5
-        "Saving contacts and exiting the program"
-      end
     end
   
     def launch_app
@@ -71,23 +68,40 @@ class ContactApp
   
     def add_a_contact
       contact=Contact.new()
-      puts "Enter Contact full name: "
-      contact.full_name=gets.strip
-      puts "Enter Contact email:"
-      contact.email=gets.strip
-      puts "Enter Contact Address"
-      contact.address=gets.strip
-      puts "Enter Contact phone number"
-      contact.phone=gets.strip
+      loop do 
+        puts "Enter Contact full name: "
+        contact.full_name=gets.strip
+        break if contact.full_name != false
+      end
+      loop do
+        puts "Enter Contact Email:"
+        contact.email=gets.strip 
+        break if contact.email != false
+      end
+        puts "Enter Contact Address:"
+        contact.address=gets.strip 
+      loop do 
+        puts "Enter Contact phone number"
+        contact.phone=gets.strip
+        break if contact.phone !=false
+      end
+      
       Contact::contacts << contact.contact_hash
       puts "contact created successfuly"
     end
   
     def modify_contact
-      puts "Which contact you want to modify?"
-      choice=gets.strip.to_i
-      choice-=1
-      if choice>=0 || Contact::contacts[choice]!=nil
+      loop do 
+        puts "Which contact you want to modify?"
+        choice=gets.strip.to_i
+        choice-=1
+        if choice>=0 && Contact::contacts[choice]!=nil
+            break 
+        else
+            puts "Invalid ID" 
+        end
+      end
+      
         contact=Contact.new()
         puts "Enter Contact full name: "
         contact.full_name=gets.strip
@@ -97,9 +111,24 @@ class ContactApp
         contact.address=gets.strip
         puts "Enter Contact phone number"
         contact.phone=gets.strip
-        Contact::contacts[choice]=contact.contact_hash
-        puts "contact modified successfuly"
-      end
+
+      Contact::contacts[choice]=contact.contact_hash
+      puts "contact modified successfuly"
+    #   if choice>=0 && Contact::contacts[choice]!=nil
+    #     contact=Contact.new()
+    #     puts "Enter Contact full name: "
+    #     contact.full_name=gets.strip
+    #     puts "Enter Contact email:"
+    #     contact.email=gets.strip
+    #     puts "Enter Contact Address"
+    #     contact.address=gets.strip
+    #     puts "Enter Contact phone number"
+    #     contact.phone=gets.strip
+    #     Contact::contacts[choice]=contact.contact_hash
+    #     puts "contact modified successfuly"
+    #   else 
+    #     puts 'Invalid ID'
+    #   end
   
     end
   
@@ -109,11 +138,11 @@ class ContactApp
       choice-=1
       p choice
       puts "Deleting contact..."
-      if choice >= 0 || Contact::contacts[choice]!=nil
+      if choice >= 0 && Contact::contacts[choice]!=nil
         Contact::contacts.delete_at(choice)
         puts "Contact deleted."
       else
-        puts "invalid index"
+        puts "Invalid ID"
       end 
   
     end

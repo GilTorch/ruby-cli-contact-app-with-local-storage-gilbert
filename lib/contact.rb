@@ -19,9 +19,14 @@ class Contact
       if(passed_full_name!="")
          @contact_object[:full_name]=passed_full_name
       else
-        raise "Full Name is required for the contact"
+        puts "Full Name is required for the contact!"
+        @contact_object[:full_name]=false
       end
       # contact_hash
+    end
+    
+    def full_name
+        @contact_object[:full_name]
     end
   
     def phone=(passed_phone)
@@ -29,9 +34,16 @@ class Contact
         @contact_object[:phone]=passed_phone
       else
         if(passed_phone!="")
-          raise "Your phone number doesn't match a US or Haitian phone pattern"
+          puts "Your phone number doesn't match a US or Haitian phone pattern"
+        else
+          puts "Phone Number is required!"
+          @contact_object[:phone]=false
         end
       end 
+    end
+
+    def phone
+        @contact_object[:phone]
     end
   
     def email=(passed_email)
@@ -39,9 +51,14 @@ class Contact
         @contact_object[:email]=passed_email
       else
         if(passed_email!="")
-          raise "You didn't pass a valid email"
+          puts "Your email is invalid"
+          @contact_object[:email]=false
         end
       end
+    end
+
+    def email
+       @contact_object[:email]
     end
   
     def address=(passed_address)

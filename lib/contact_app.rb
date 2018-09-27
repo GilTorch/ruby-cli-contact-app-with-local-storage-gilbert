@@ -91,45 +91,34 @@ class ContactApp
     end
   
     def modify_contact
-      loop do 
-        puts "Which contact you want to modify?"
-        choice=gets.strip.to_i
-        choice-=1
-        if choice>=0 && Contact::contacts[choice]!=nil
-            break 
-        else
-            puts "Invalid ID" 
-        end
-      end
+        if Contact::contacts.length!=0
+            loop do 
+                puts "Which contact you want to modify?"
+                choice=gets.strip.to_i
+                choice-=1
+        
+                if choice>=0 && Contact::contacts[choice]!=nil
+                    break 
+                else
+                    puts "Invalid ID" 
+                end
+             end
+                
+              contact=Contact.new()
+              puts "Enter Contact full name: "
+              contact.full_name=gets.strip
+              puts "Enter Contact email:"
+              contact.email=gets.strip
+              puts "Enter Contact Address"
+              contact.address=gets.strip
+              puts "Enter Contact phone number"
+              contact.phone=gets.strip
       
-        contact=Contact.new()
-        puts "Enter Contact full name: "
-        contact.full_name=gets.strip
-        puts "Enter Contact email:"
-        contact.email=gets.strip
-        puts "Enter Contact Address"
-        contact.address=gets.strip
-        puts "Enter Contact phone number"
-        contact.phone=gets.strip
-
-      Contact::contacts[choice]=contact.contact_hash
-      puts "contact modified successfuly"
-    #   if choice>=0 && Contact::contacts[choice]!=nil
-    #     contact=Contact.new()
-    #     puts "Enter Contact full name: "
-    #     contact.full_name=gets.strip
-    #     puts "Enter Contact email:"
-    #     contact.email=gets.strip
-    #     puts "Enter Contact Address"
-    #     contact.address=gets.strip
-    #     puts "Enter Contact phone number"
-    #     contact.phone=gets.strip
-    #     Contact::contacts[choice]=contact.contact_hash
-    #     puts "contact modified successfuly"
-    #   else 
-    #     puts 'Invalid ID'
-    #   end
-  
+              Contact::contacts[choice]=contact.contact_hash
+              puts "contact modified successfuly"
+        else 
+            puts "The list is empty!"
+        end
     end
   
     def delete_contact

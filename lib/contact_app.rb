@@ -1,3 +1,4 @@
+require 'terminal-table'
 require_relative 'contact'
 class ContactApp
     @contact=[]
@@ -52,14 +53,19 @@ class ContactApp
      if Contact::contacts.empty?
       puts "The list is empty..."
      else 
-      puts "ID | Full Name | Email | Address | Phone Number |"
-      puts  "----------------------------------------------"
       index = 0
-      Contact::contacts.each do |contact|
-        puts "#{index+1}| #{contact[:full_name]} | #{contact[:email]} | #{contact[:address]} | #{contact[:phone]}"
-        index +=1
-      end
-      puts "----------------------------------------------"
+      rows=[]
+        contactIndex=0
+        Contact::contacts.each do |contact|
+            rowContact=contact.values.flatten
+            rowContact.unshift(contactIndex+1)
+            rows.push(rowContact)
+            contactIndex+=1
+        end
+
+        table = Terminal::Table.new :title => "Ruby CLI Contact App", :headings => ['ID', 'Full Name','Email','Address','Phone Number'], :rows => rows
+
+        puts table
      end
     end
   

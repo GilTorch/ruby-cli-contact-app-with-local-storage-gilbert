@@ -2,16 +2,18 @@ require 'json'
 require 'terminal-table'
 require_relative 'contact'
 class ContactApp
-  
+
+    @contacts=[]
+
     def initialize
       file_exist=File.exist?("contacts.json")
       if (!file_exist)
         contacts_json=File.open("contacts.json","w")
-        contacts_json.puts(Contact::contacts.to_json)
+        contacts_json.puts(@contacts.to_json)
         contacts_json.close
       else 
         file=File.read("contacts.json")
-        Contact::contacts=JSON.parse(file)
+        @contacts=JSON.parse(file)
       end
       launch_app
     end
@@ -55,7 +57,7 @@ class ContactApp
       index = 0
       rows=[]
         contactIndex=0
-        Contact::contacts.each do |contact|
+        @contacts.each do |contact|
             rowContact=contact.values.flatten
             rowContact.unshift(contactIndex+1)
             rows.push(rowContact)
@@ -70,7 +72,7 @@ class ContactApp
     end
   
     def display_contacts
-     if Contact::contacts.empty?
+     if @contacts.empty?
       puts "The list is empty..."
      else 
       
@@ -104,18 +106,18 @@ class ContactApp
         break if contact.phone !=false
       end
       
-      Contact::contacts << contact.contact_hash
+      @contacts << contact.contact_hash
       puts "contact created successfuly"
     end
   
     def modify_contact
-        if Contact::contacts.length!=0
+        if @contacts.length!=0
             loop do 
                 puts "Which contact you want to modify?"
                 choice=gets.strip.to_i
                 choice-=1
         
-                if choice>=0 && Contact::contacts[choice]!=nil
+                if choice>=0 && @contacts[choice]!=nil
                     break 
                 else
                     puts "Invalid ID" 
@@ -132,7 +134,7 @@ class ContactApp
               puts "Enter Contact phone number"
               contact.phone=gets.strip
       
-              Contact::contacts[choice]=contact.contact_hash
+              @contacts[choice]=contact.contact_hash
               puts "contact modified successfuly"
         else 
             puts "The list is empty!"
@@ -145,8 +147,8 @@ class ContactApp
       choice-=1
       p choice
       puts "Deleting contact..."
-      if choice >= 0 && Contact::contacts[choice]!=nil
-        Contact::contacts.delete_at(choice)
+      if choice >= 0 && @contacts[choice]!=nil
+        @contacts.delete_at(choice)
         puts "Contact deleted."
       else
         puts "Invalid ID"
@@ -156,7 +158,7 @@ class ContactApp
 
     def saving_and_exiting
       contacts_json=File.open("contacts.json","w")
-      contacts_json.puts(Contact::contacts.to_json)
+      contacts_json.puts(@contacts.to_json)
       contacts_json.close
       abort("Thank You for using this app!")
     end

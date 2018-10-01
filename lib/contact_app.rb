@@ -1,6 +1,8 @@
 require 'json'
 require 'terminal-table'
 require_relative 'contact'
+
+
 class ContactApp
 
     @contacts=[]

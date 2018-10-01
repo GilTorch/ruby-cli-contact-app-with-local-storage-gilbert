@@ -1,6 +1,4 @@
 class Contact
-  
-    @@contacts=[]
     
     def initialize(full_name="",email="",address="",phone="")
      if (full_name!="")
@@ -68,14 +66,5 @@ class Contact
     def contact_hash
       @contact_object
     end
-  
-    def self.contacts
-      @@contacts
-    end
-
-    def self.contacts=(passed_contact_list)
-      @@contacts=passed_contact_list
-    end
-  
    
   end

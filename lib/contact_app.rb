@@ -87,57 +87,62 @@ class ContactApp
       table = Terminal::Table.new :title => "Ruby CLI Contact App", :headings => ['ID', 'Full Name','Email','Address','Phone Number'], :rows => @rows
       puts table
     end
+
+    private 
+   
   
     def add_a_contact
-      contact=Contact.new()
+      contact = Contact.new
       loop do 
         puts "Enter Contact full name: "
         contact.full_name=gets.strip
-        break if contact.full_name != false
+        break if contact.full_name!=false
       end
       loop do
         puts "Enter Contact Email:"
         contact.email=gets.strip 
         break if contact.email != false
       end
+      loop do
         puts "Enter Contact Address:"
-        contact.address=gets.strip 
-      loop do 
-        puts "Enter Contact phone number"
-        contact.phone=gets.strip
-        break if contact.phone !=false
+        contact.address=gets.strip
+        break if contact.address!=false
       end
-      
-      @contacts << contact.contact_hash
+      loop do 
+      puts "Enter Contact phone number"
+      contact.phone=gets.strip
+      break if contact.phone!=false
+      end
+
       puts "contact created successfuly"
     end
   
     def modify_contact
         if @contacts.length!=0
-            loop do 
-                puts "Which contact you want to modify?"
-                choice=gets.strip.to_i
-                choice-=1
-        
-                if choice>=0 && @contacts[choice]!=nil
-                    break 
-                else
-                    puts "Invalid ID" 
-                end
-             end
-                
-              contact=Contact.new()
-              puts "Enter Contact full name: "
-              contact.full_name=gets.strip
-              puts "Enter Contact email:"
-              contact.email=gets.strip
-              puts "Enter Contact Address"
-              contact.address=gets.strip
-              puts "Enter Contact phone number"
-              contact.phone=gets.strip
+          loop do 
+              puts "Which contact you want to modify?"
+              choice=gets.strip.to_i
+              choice-=1
       
-              @contacts[choice]=contact.contact_hash
-              puts "contact modified successfuly"
+              if choice>=0 && @contacts[choice]!=nil
+                  break 
+              else
+                  puts "Invalid ID" 
+              end
+            end
+              
+            contact=Contact.new()
+            puts "Enter Contact full name: "
+            contact.full_name=gets.strip
+            puts "Enter Contact email:"
+            contact.email=gets.strip
+            puts "Enter Contact Address"
+            contact.address=gets.strip
+            puts "Enter Contact phone number"
+            contact.phone=gets.strip
+    
+            @contacts[choice]=contact.contact_hash
+            puts "contact modified successfuly"
         else 
             puts "The list is empty!"
         end
